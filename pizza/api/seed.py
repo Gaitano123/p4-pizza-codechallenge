@@ -4,7 +4,7 @@ from faker import Faker
 from app import app
 import random
 
-from .models import Pizza, RestaurantPizza, Restaurant, db
+from models import Pizza, Restaurant, RestaurantPizza, db
 
 with app.app_context():
     
@@ -18,7 +18,7 @@ with app.app_context():
     pizzas=[]
     for n in range(70):
         pizza = Pizza(name=fake.name(),
-                      ingredients=fake.ingredients())
+                      ingredients=fake.color_name())
         pizzas.append(pizza)
         
     db.session.add_all(pizzas)
