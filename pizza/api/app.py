@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 from flask_restful import Api
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from models import Pizza, Restaurant, RestaurantPizza, db
+from .models import Pizza, Restaurant, RestaurantPizza, db
 
 app = Flask(__name__)
 api= Api(app)
@@ -17,4 +17,5 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
-api = Api(app)
+if __name__ == '__main__':
+    app.run(port=5555)

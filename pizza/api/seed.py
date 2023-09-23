@@ -2,8 +2,9 @@
 
 from faker import Faker
 from app import app
+import random
 
-from models import Pizza, RestaurantPizza, Restaurant, db
+from .models import Pizza, RestaurantPizza, Restaurant, db
 
 with app.app_context():
     
@@ -12,6 +13,7 @@ with app.app_context():
     Pizza.query.delete()
     Restaurant.query.delete()
     RestaurantPizza.query.delete()
+    db.session.commit()
     
     pizzas=[]
     for n in range(70):
@@ -19,8 +21,8 @@ with app.app_context():
                       ingredients=fake.ingredients())
         pizzas.append(pizza)
         
-        db.session.add_all(pizzas)
-        db.session.commit()
+    db.session.add_all(pizzas)
+    db.session.commit()
         
     restaurants = []
     for n in range(70):
@@ -28,5 +30,20 @@ with app.app_context():
                                 address = fake.address())
         restaurants.append(restaurant)
         
-        db.session.add_all(restaurants)
-        db.session.commit()
+    db.session.add_all(restaurants)
+    db.session.commit()
+        
+    restaurant_pizzas = []
+    for i in range(100):
+        
+        random_pizza = random.choice(pizzas)
+        random_restaurant = random.choice(restaurants)
+        
+        restaurant_pizza = RestaurantPizza(
+            pizza_id = random_pizza.id,
+            restaurant_id = random_restaurant.id,
+            price = random.randint(1, 30)
+        )
+        restaurant_pizzas.append(restaurant_pizza)
+    db.session.add_all(restaurant_pizzas)
+    db.session.commit()        
