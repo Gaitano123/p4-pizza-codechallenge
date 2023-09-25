@@ -163,7 +163,7 @@ If the `RestaurantPizza` is not created successfully, return the following JSON 
 3. Install dependencies: `pipenv install`
 4. Navigate to cloned repository: `cd pizza`.
 5. Navigate to the restaurants folder.
-6. Run the `app.py` script.
+6. Run the `run.py` script.
 7. Test your endpoints with the given routes in postman.
 
 
