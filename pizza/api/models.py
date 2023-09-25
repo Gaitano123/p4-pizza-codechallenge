@@ -1,9 +1,8 @@
-# from . import db
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
-from sqlalchemy import MetaData
-from sqlalchemy.orm import validates
 from datetime import datetime
+
+from api import SerializerMixin, SQLAlchemy, validates, MetaData
+
 
 metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -11,7 +10,7 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(metadata = metadata)
 
-class Restaurant(db.Model):
+class Restaurant(db.Model, SerializerMixin):
     
     __tablename__ = 'restaurants'
     
@@ -21,6 +20,8 @@ class Restaurant(db.Model):
     
     pizza = db.relationship('RestaurantPizza', backref='restaurant')
     
+    serialize_rules = ('-restaurant_pizzas.restaurant',)
+    
     @validates('name')
     def validate_name(self, key, name):
         if len(name) > 50:
@@ -29,7 +30,7 @@ class Restaurant(db.Model):
         return name
 
 
-class Pizza(db.Model):
+class Pizza(db.Model, SerializerMixin):
     
     __tablename__ = 'pizzas'
     
@@ -41,8 +42,10 @@ class Pizza(db.Model):
     
     restaurant = db.relationship('RestaurantPizza', backref='pizza')
     
+    serialize_rules = ('-restaurant_pizzas.pizza',)
+    
 
-class RestaurantPizza(db.Model):
+class RestaurantPizza(db.Model, SerializerMixin):
     
     __tablename__ = 'restaurants_pizza'
     
@@ -52,6 +55,8 @@ class RestaurantPizza(db.Model):
     price = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    
+    serialize_rules = ('-restaurant.restaurant_pizzas', '-pizza.restaurant_pizzas',)
     
     @validates('price')
     def validate_price(self, key, amount):
