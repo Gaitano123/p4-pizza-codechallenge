@@ -32,7 +32,7 @@ Add validations to the `RestaurantPizza` model:
 - must have a name less than 50 words in length
 - must have a unique name
 
-# Routes
+## Routes
 
 Set up the following routes. Make sure to return JSON data in the format specified along with the appropriate HTTP verb.
 
