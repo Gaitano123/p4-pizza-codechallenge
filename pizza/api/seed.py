@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from faker import Faker
-from app import app
+from pizza.app import app
 import random
 
 from models import Pizza, Restaurant, RestaurantPizza, db
